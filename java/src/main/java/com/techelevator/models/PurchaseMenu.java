@@ -1,10 +1,17 @@
 package com.techelevator.models;
 
+import com.techelevator.ui.UserOutput;
+
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-public class PurchaseMenu {
+public class PurchaseMenu  {
     private BigDecimal amountInserted = new BigDecimal("0.00");
+
+    public void purchaseMenu(){
+        this.amountInserted = amountInserted;
+    }
+
     Scanner input = new Scanner(System.in);
 
     public BigDecimal getAmountInserted() {
@@ -25,12 +32,32 @@ public class PurchaseMenu {
     }
 
     public void feedMoney(){
+        boolean stillAdding = true;
+        while (stillAdding) {
+            System.out.println("Please insert a valid money amount: $1, $2, $5 or 10$");
+            String amount = input.nextLine();
+            System.out.println(amount);
+            BigDecimal moneyIn = new BigDecimal(amount);
+            this.amountInserted = this.amountInserted.add(moneyIn);
+            System.out.println("Current money Provided: $" + this.amountInserted);
+            displayPurchaseOption();
+            String option = purchaseOption();
+            if(!option.equals("1")) {
+                stillAdding = false;
+            }
+        }
 
-        System.out.println("Please insert a valid money amount: $1, $2, $5 or 10$");
-        String amount = input.nextLine();
-        BigDecimal moneyIn =  new BigDecimal(amount);
-        amountInserted.add(moneyIn);
-        System.out.println("Amount Inserted: $" + amount);
+
+
+    }
+
+    public void displayPurchaseOption() {
+
+        System.out.println("(1) Feed Money");
+        System.out.println("(2) Select Product");
+        System.out.println("(3) Finish Transaction");
+
+
 
 
     }

@@ -13,7 +13,11 @@ public  class VendingMachineFunctions {
     BigDecimal balance = new BigDecimal("0.00");
     File machineItems = new File("vendingmachine.csv");
     Map<String , String []> vendingMachineItems = new HashMap<>();
+    Scanner userInputScanner = new Scanner(System.in);
 
+    public Map<String, String[]> getVendingMachineItems() {
+        return vendingMachineItems;
+    }
 
     public void populateMap() {
         Scanner fileScanner;
@@ -28,8 +32,8 @@ public  class VendingMachineFunctions {
                     //Split each line of file by "|"
                     String[] itemList = line.split("\\|");
                     //Populate Map
-                    if (!vendingMachineItems.containsKey(itemList[1])){
-                        vendingMachineItems.put(itemList[1],itemList);
+                    if (!vendingMachineItems.containsKey(itemList[0])){
+                        vendingMachineItems.put(itemList[0],itemList);
                     }
                 }
             } catch (FileNotFoundException e) {
@@ -48,6 +52,16 @@ public  class VendingMachineFunctions {
             System.out.println("Slot:" + slot + " Name:" + name + " Price:" + price + " Amount:" +amount);
 
         }
+    }
+
+    public String itemSelection() {
+        System.out.println("Please select and item based on slot number");
+        String slotNumber = userInputScanner.nextLine();
+        return slotNumber;
+    }
+
+    public void updateItem() {
+
     }
 
 

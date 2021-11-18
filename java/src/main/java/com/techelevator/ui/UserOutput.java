@@ -1,5 +1,7 @@
 package com.techelevator.ui;
 
+import com.techelevator.models.PurchaseMenu;
+
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Scanner;
@@ -11,7 +13,7 @@ import java.util.Scanner;
  * 
  * Dependencies: None
  */
-public class UserOutput
+public class UserOutput extends PurchaseMenu
 {
 
     public static void displayMessage(String message)
@@ -31,12 +33,7 @@ public class UserOutput
     }
 
     public static void displayPurchaseMenu() {
-        System.out.println("(1) Feed Money");
-        System.out.println("(2) Select Product");
-        System.out.println("(3) Finish Transaction");
 
-
-        //System.out.println("Current money Provided: $" + someSortOfBalanceThing);
     }
 
 

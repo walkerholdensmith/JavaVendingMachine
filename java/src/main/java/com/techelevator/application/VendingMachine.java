@@ -15,22 +15,27 @@ public class VendingMachine
         {
             UserOutput.displayHomeScreen();
             String choice = UserInput.getHomeScreenOption();
-
+            VendingMachineFunctions vendingItems = new VendingMachineFunctions();
 
             if(choice.equals("display"))
             {
                 // display the vending machine slots
-                VendingMachineFunctions displayInformation = new VendingMachineFunctions();
-                displayInformation.displayItems();
+
+                vendingItems.displayItems();
             }
             else if(choice.equals("purchase"))
             {
                 // make a purchase
-                UserOutput.displayPurchaseMenu();
+
                 PurchaseMenu purchaseMenu = new PurchaseMenu();
+                purchaseMenu.displayPurchaseOption();
                 String option = purchaseMenu.purchaseOption();
-                if (option.equals("1")){
+
+                if(option.equals("1")) {
                     purchaseMenu.feedMoney();
+                } else if (option.equals("2")) {
+                    vendingItems.displayItems();
+                    String purchasedItem = vendingItems.itemSelection();
                 }
 
             }
