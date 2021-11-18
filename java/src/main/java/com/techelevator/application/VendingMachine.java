@@ -19,6 +19,7 @@ public class VendingMachine
             else if(choice.equals("purchase"))
             {
                 // make a purchase
+                UserOutput.displayPurchaseMenu();
             }
             else if(choice.equals("exit"))
             {
@@ -27,5 +28,22 @@ public class VendingMachine
             }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 }
