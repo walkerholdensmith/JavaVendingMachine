@@ -8,5 +8,7 @@ public interface Items{
     BigDecimal getPrice();
     int getAmount();
 
+    public void setAmount(int amount);
+
 
 }

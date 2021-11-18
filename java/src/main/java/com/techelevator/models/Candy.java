@@ -30,4 +30,20 @@ public class Candy implements Items{
     public int getAmount() {
         return amount;
     }
+
+    public void setSlot(String slot) {
+        this.slot = slot;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 }

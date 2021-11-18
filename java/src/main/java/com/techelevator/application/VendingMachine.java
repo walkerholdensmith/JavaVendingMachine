@@ -5,17 +5,25 @@ import com.techelevator.models.VendingMachineFunctions;
 import com.techelevator.ui.UserInput;
 import com.techelevator.ui.UserOutput;
 
+
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class VendingMachine 
 {
     public void run()
     {
+
+        VendingMachineFunctions vendingItems = new VendingMachineFunctions();
+        vendingItems.populateMap();
+        PurchaseMenu purchaseMenu = new PurchaseMenu();
         while(true)
         {
             UserOutput.displayHomeScreen();
             String choice = UserInput.getHomeScreenOption();
-            VendingMachineFunctions vendingItems = new VendingMachineFunctions();
+            //String choice = UserInput.getHomeScreenOption();
+            //VendingMachineFunctions vendingItems = new VendingMachineFunctions();
 
             if(choice.equals("display"))
             {
@@ -27,7 +35,7 @@ public class VendingMachine
             {
                 // make a purchase
 
-                PurchaseMenu purchaseMenu = new PurchaseMenu();
+
                 purchaseMenu.displayPurchaseOption();
                 String option = purchaseMenu.purchaseOption();
 
@@ -36,6 +44,12 @@ public class VendingMachine
                 } else if (option.equals("2")) {
                     vendingItems.displayItems();
                     String purchasedItem = vendingItems.itemSelection();
+                    BigDecimal amountInserted = purchaseMenu.getAmountInserted();
+                    System.out.println(amountInserted);
+                    vendingItems.updateItem(purchasedItem, amountInserted);
+                    System.out.println(vendingItems.getBalance());
+
+
                 }
 
             }
