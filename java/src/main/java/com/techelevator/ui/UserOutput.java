@@ -29,4 +29,12 @@ public class UserOutput
         System.out.println();
     }
 
+    public static void displayPurchaseMenu() {
+        System.out.println("(1) Feed Money");
+        System.out.println("(2) Select Product");
+        System.out.println("(3) Finish Transaction");
+
+        //System.out.println("Current money Provided: $" + someSortOfBalanceThing);
+    }
+
 }
