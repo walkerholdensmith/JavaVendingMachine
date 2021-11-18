@@ -30,9 +30,7 @@ public class Beverage extends VendingMachineFunctions implements Items {
         return amount;
     }
 
-    public String test() {
-       return super.getTest();
-    }
+
 
 }
 

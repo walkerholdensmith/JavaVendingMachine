@@ -2,6 +2,7 @@ package com.techelevator.ui;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Scanner;
 
 
 /**
@@ -34,7 +35,10 @@ public class UserOutput
         System.out.println("(2) Select Product");
         System.out.println("(3) Finish Transaction");
 
+
         //System.out.println("Current money Provided: $" + someSortOfBalanceThing);
     }
+
+
 
 }
