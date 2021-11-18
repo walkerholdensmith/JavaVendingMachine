@@ -12,6 +12,7 @@ public class VendingMachine
             UserOutput.displayHomeScreen();
             String choice = UserInput.getHomeScreenOption();
 
+
             if(choice.equals("display"))
             {
                 // display the vending machine slots
@@ -27,5 +28,10 @@ public class VendingMachine
             }
         }
     }
+
+
+
+
+
     
 }
