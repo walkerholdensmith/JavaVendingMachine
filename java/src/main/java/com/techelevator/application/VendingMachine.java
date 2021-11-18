@@ -39,10 +39,32 @@ public class VendingMachine
                 purchaseMenu.displayPurchaseOption();
                 String option = purchaseMenu.purchaseOption();
 
+                String option2 = "";
                 if(option.equals("1")) {
+<<<<<<< HEAD
                     purchaseMenu.feedMoney();
                 }
                 if (option.equals("2")) {
+=======
+                    boolean stillAdding = true;
+
+                    while(stillAdding) {
+                        purchaseMenu.feedMoney();
+                        purchaseMenu.displayPurchaseOption();
+                        option2 = purchaseMenu.purchaseOption();
+                        if(option2.equals("1")) {
+                            stillAdding = true;
+
+                        } else if(option2.equals("2")) {
+                            option = "2";
+                            System.out.println("Something");
+                            stillAdding = false;
+
+                        }
+                    }
+
+                }  if (option.equals("2")) {
+>>>>>>> e997351704ca942c8548f81d982f00d762f9a3e2
                     vendingItems.displayItems();
                     String purchasedItem = vendingItems.itemSelection();
                     BigDecimal amountInserted = purchaseMenu.getAmountInserted();
