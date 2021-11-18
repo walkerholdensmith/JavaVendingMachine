@@ -92,6 +92,12 @@ public  class VendingMachineFunctions {
 
     }
 
+
+    public BigDecimal getItemPrice(String itemSlot){
+        return vendingMachineItems.get(itemSlot).getPrice();
+
+    }
+
     public void increaseBalance(BigDecimal price){
         this.balance = this.balance.add(price);
     }

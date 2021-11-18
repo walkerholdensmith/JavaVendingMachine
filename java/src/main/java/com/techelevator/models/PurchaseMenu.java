@@ -31,27 +31,6 @@ public class PurchaseMenu  {
         return option;
     }
 
-//    public void feedMoney(){
-//        boolean stillAdding = true;
-//        while (stillAdding) {
-//            System.out.println("Please insert a valid money amount: $1, $2, $5 or 10$");
-//            String amount = input.nextLine();
-//            System.out.println(amount);
-//            BigDecimal moneyIn = new BigDecimal(amount);
-//            this.amountInserted = this.amountInserted.add(moneyIn);
-//            System.out.println("Current money Provided: $" + this.amountInserted);
-//            displayPurchaseOption();
-//            String option = purchaseOption();
-//            if(!option.equals("1")) {
-//                stillAdding = false;
-//            } else if(option.equals("2")) {
-//                System.out.println("Something");
-//            }
-//        }
-//
-//
-//
-//    }
 
     public void feedMoney(){
 

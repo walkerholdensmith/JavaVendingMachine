@@ -11,8 +11,6 @@ public class VendingMachineCLI
         VendingMachine vendingMachine = new VendingMachine();
         vendingMachine.run();
 
-        //VendingMachineFunctions test = new VendingMachineFunctions();
-        //System.out.println(test.getTest());
 
     }
     

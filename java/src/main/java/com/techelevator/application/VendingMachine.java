@@ -10,7 +10,7 @@ import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-public class VendingMachine 
+public class VendingMachine
 {
     public void run()
     {
@@ -18,6 +18,7 @@ public class VendingMachine
         VendingMachineFunctions vendingItems = new VendingMachineFunctions();
         vendingItems.populateMap();
         PurchaseMenu purchaseMenu = new PurchaseMenu();
+        BigDecimal amountInserted = new BigDecimal("0.00");
         while(true)
         {
             UserOutput.displayHomeScreen();
@@ -34,45 +35,33 @@ public class VendingMachine
             else if(choice.equals("purchase"))
             {
                 // make a purchase
-
-
                 purchaseMenu.displayPurchaseOption();
                 String option = purchaseMenu.purchaseOption();
-
-                String option2 = "";
+                String purchasedItem = "";
                 if(option.equals("1")) {
-<<<<<<< HEAD
-                    purchaseMenu.feedMoney();
-                }
-                if (option.equals("2")) {
-=======
                     boolean stillAdding = true;
 
                     while(stillAdding) {
                         purchaseMenu.feedMoney();
                         purchaseMenu.displayPurchaseOption();
-                        option2 = purchaseMenu.purchaseOption();
-                        if(option2.equals("1")) {
-                            stillAdding = true;
-
-                        } else if(option2.equals("2")) {
-                            option = "2";
-                            System.out.println("Something");
+                        option = purchaseMenu.purchaseOption();
+                        if(!option.equals("1")) {
                             stillAdding = false;
-
                         }
                     }
-
-                }  if (option.equals("2")) {
->>>>>>> e997351704ca942c8548f81d982f00d762f9a3e2
+                }
+                if (option.equals("2")) {
                     vendingItems.displayItems();
-                    String purchasedItem = vendingItems.itemSelection();
-                    BigDecimal amountInserted = purchaseMenu.getAmountInserted();
-                    System.out.println(amountInserted);
+                    purchasedItem = vendingItems.itemSelection();
+                    amountInserted = purchaseMenu.getAmountInserted();
                     vendingItems.updateItem(purchasedItem, amountInserted);
-                    System.out.println(vendingItems.getBalance());
+                    purchaseMenu.displayPurchaseOption();
+                    option = purchaseMenu.purchaseOption();
+                }
 
-
+                if (option.equals("3")){
+                    BigDecimal itemPrice = vendingItems.getItemPrice(purchasedItem);
+                    System.out.println(vendingItems.createChange(itemPrice, amountInserted));
                 }
 
             }
@@ -89,5 +78,24 @@ public class VendingMachine
 
 
 
-    
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
