@@ -41,7 +41,8 @@ public class VendingMachine
 
                 if(option.equals("1")) {
                     purchaseMenu.feedMoney();
-                } else if (option.equals("2")) {
+                }
+                if (option.equals("2")) {
                     vendingItems.displayItems();
                     String purchasedItem = vendingItems.itemSelection();
                     BigDecimal amountInserted = purchaseMenu.getAmountInserted();
