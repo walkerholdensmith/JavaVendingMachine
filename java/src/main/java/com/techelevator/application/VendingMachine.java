@@ -8,6 +8,8 @@ import com.techelevator.ui.UserOutput;
 
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class VendingMachine
@@ -19,16 +21,14 @@ public class VendingMachine
         vendingItems.populateMap();
         PurchaseMenu purchaseMenu = new PurchaseMenu();
         BigDecimal amountInserted = new BigDecimal("0.00");
+        List<Object> dataTransferList = new ArrayList<Object>();
         while(true)
         {
             UserOutput.displayHomeScreen();
             String choice = UserInput.getHomeScreenOption();
-            //String choice = UserInput.getHomeScreenOption();
-            //VendingMachineFunctions vendingItems = new VendingMachineFunctions();
 
             if(choice.equals("display"))
             {
-                // display the vending machine slots
 
                 vendingItems.displayItems();
             }
@@ -44,11 +44,12 @@ public class VendingMachine
                 }
 
                 if (option.equals("2")) {
-                    option = optionTwo(vendingItems, purchaseMenu, totalPrice, option, amountInserted );
+                    dataTransferList = optionTwo(vendingItems, purchaseMenu, totalPrice, option, amountInserted, dataTransferList );
+                    option = dataTransferList.get(0).toString();
+                    totalPrice = new BigDecimal(dataTransferList.get(1).toString());
+                    amountInserted = new BigDecimal(dataTransferList.get(2).toString());
 
                 }
-
-
 
                 if (option.equals("3")){
                     //BigDecimal itemPrice = vendingItems.getItemPrice(purchasedItem);
@@ -81,7 +82,7 @@ public class VendingMachine
         return option;
     }
 
-    public String optionTwo(VendingMachineFunctions vendingItems, PurchaseMenu purchaseMenu, BigDecimal totalPrice, String option,BigDecimal amountInserted ){
+    public List<Object> optionTwo(VendingMachineFunctions vendingItems, PurchaseMenu purchaseMenu, BigDecimal totalPrice, String option,BigDecimal amountInserted, List<Object> dataTransfer ){
         String purchasedItem = "";
         boolean stillSelecting = true;
         BigDecimal remainingMoney = new BigDecimal("0.00");
@@ -93,6 +94,7 @@ public class VendingMachine
             totalPrice = totalPrice.add(vendingItems.getItemPrice(purchasedItem));
             if (amountInserted.compareTo(totalPrice) == 1){
                 remainingMoney = amountInserted.subtract(totalPrice);
+
                 System.out.println(vendingItems.getName(purchasedItem) +  " " +vendingItems.getPrice(purchasedItem) + " " + remainingMoney);
                 System.out.println(vendingItems.getSound(purchasedItem));
             } else {
@@ -101,6 +103,7 @@ public class VendingMachine
 
             purchaseMenu.displayPurchaseOption();
             option = purchaseMenu.purchaseOption();
+            purchaseMenu.setAmountInserted(remainingMoney);
             if (option.equals("1")){
                 optionOne(purchaseMenu, option);
             }
@@ -108,12 +111,10 @@ public class VendingMachine
                 stillSelecting = false;
             }
         }
-
-        purchaseMenu.setAmountInserted(remainingMoney);
-
-
-
-        return option;
+        dataTransfer.add(option);
+        dataTransfer.add(totalPrice);
+        dataTransfer.add(amountInserted);
+        return dataTransfer;
     }
 
 
