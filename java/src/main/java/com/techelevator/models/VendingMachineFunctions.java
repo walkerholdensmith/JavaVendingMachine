@@ -86,12 +86,43 @@ public  class VendingMachineFunctions {
 
     }
 
-    public BigDecimal createChange(BigDecimal price, BigDecimal amount){
+    public String createChange(BigDecimal price, BigDecimal amount){
+        String coinChange = "Quarter: ";
         BigDecimal change = amount.subtract(price);
-        return change;
 
+        System.out.println(change);
+        BigDecimal quarters = getQuarters(change);
+        BigDecimal changeArray [] = change.divideAndRemainder(new BigDecimal(".25"));
+        change = changeArray[1];
+        BigDecimal dimes = getDimes(change);
+        changeArray = change.divideAndRemainder(new BigDecimal(".10"));
+        change = changeArray[1];
+        BigDecimal nickles = getDimes(change);
+
+        coinChange += quarters + " " + dimes + " " + nickles;
+        return coinChange;
     }
 
+    public BigDecimal getQuarters(BigDecimal change){
+        BigDecimal quarter = new BigDecimal(".25");
+
+        BigDecimal [] quarterArray = change.divideAndRemainder(quarter);
+        System.out.println(quarterArray[0]);
+        return quarterArray[0];
+    }
+
+    public BigDecimal getDimes(BigDecimal change){
+        BigDecimal dime = new BigDecimal(".10");
+        BigDecimal [] dimeArray = change.divideAndRemainder(dime);
+        return dimeArray[0];
+    }
+
+
+    public BigDecimal getNickles(BigDecimal change){
+        BigDecimal nickle = new BigDecimal(".05");
+        BigDecimal [] nickleArray = change.divideAndRemainder(nickle);
+        return nickleArray[0];
+    }
 
     public BigDecimal getItemPrice(String itemSlot){
         return vendingMachineItems.get(itemSlot).getPrice();

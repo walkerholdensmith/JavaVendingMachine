@@ -31,9 +31,7 @@ public class PurchaseMenu  {
         return option;
     }
 
-
     public void feedMoney(){
-
 
             System.out.println("Please insert a valid money amount: $1, $2, $5 or 10$");
             String amount = input.nextLine();
@@ -49,9 +47,6 @@ public class PurchaseMenu  {
         System.out.println("(1) Feed Money");
         System.out.println("(2) Select Product");
         System.out.println("(3) Finish Transaction");
-
-
-
 
     }
 
