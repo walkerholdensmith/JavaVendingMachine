@@ -60,6 +60,7 @@ public  class VendingMachineFunctions {
         }
     }
 
+
     public void displayItems(){
 
         for (Items item : vendingMachineItems.values()){
@@ -70,6 +71,10 @@ public  class VendingMachineFunctions {
 
     }
 
+    public int getAmount(String itemSlot){
+        return vendingMachineItems.get(itemSlot).getAmount();
+    }
+
     public String itemSelection() {
         System.out.println("Please select and item based on slot number");
         String slotNumber = userInputScanner.nextLine();
@@ -77,9 +82,9 @@ public  class VendingMachineFunctions {
     }
 
     public void updateItem(String itemSlot, BigDecimal value) {
-        int increase = vendingMachineItems.get(itemSlot).getAmount()-1;
+        int decrease = vendingMachineItems.get(itemSlot).getAmount()-1;
         //System.out.println(increase);
-        vendingMachineItems.get(itemSlot).setAmount(increase);
+        vendingMachineItems.get(itemSlot).setAmount(decrease);
         BigDecimal price = vendingMachineItems.get(itemSlot).getPrice();
         increaseBalance(price);
 

@@ -6,19 +6,18 @@ import com.techelevator.ui.UserInput;
 import com.techelevator.ui.UserOutput;
 
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class VendingMachine
 {
+
     public void run()
+
     {
 
         VendingMachineFunctions vendingItems = new VendingMachineFunctions();
@@ -26,8 +25,6 @@ public class VendingMachine
         PurchaseMenu purchaseMenu = new PurchaseMenu();
         BigDecimal amountInserted = new BigDecimal("0.00");
         List<Object> dataTransferList = new ArrayList<Object>();
-
-
 
         while(true)
         {
@@ -48,6 +45,7 @@ public class VendingMachine
                 BigDecimal totalPrice = new BigDecimal("0.00");
                 if(option.equals("1")) {
                     option = optionOne(purchaseMenu, option);
+
                 }
 
                 if (option.equals("2")) {
@@ -63,6 +61,7 @@ public class VendingMachine
                     System.out.println(vendingItems.createChange(totalPrice, amountInserted));
                     System.out.println(vendingItems.getBalance());
                     purchaseMenu.setAmountInserted(new BigDecimal("0.00"));
+                    purchaseMenu.closeFile();
                 }
 
             }
@@ -81,11 +80,11 @@ public class VendingMachine
             purchaseMenu.feedMoney();
             purchaseMenu.displayPurchaseOption();
             option = purchaseMenu.purchaseOption();
+
             if(!option.equals("1")) {
                 stillAdding = false;
             }
         }
-
         return option;
     }
 
@@ -96,27 +95,27 @@ public class VendingMachine
         while (stillSelecting) {
             vendingItems.displayItems();
             purchasedItem = vendingItems.itemSelection();
+            if (vendingItems.getAmount(purchasedItem) == 0){
+                System.out.println("SOLD OUT");
+                purchaseMenu.displayPurchaseOption();
+                option = purchaseMenu.purchaseOption();
+            }
             amountInserted = purchaseMenu.getAmountInserted();
             vendingItems.updateItem(purchasedItem, amountInserted);
             totalPrice = totalPrice.add(vendingItems.getItemPrice(purchasedItem));
             if (amountInserted.compareTo(totalPrice) == 1){
                 remainingMoney = amountInserted.subtract(totalPrice);
-
+                LocalDateTime currentTime =  LocalDateTime.now();
+                purchaseMenu.optionTwoFileWrite(currentTime, vendingItems.getName(purchasedItem), amountInserted, remainingMoney);
                 System.out.println(vendingItems.getName(purchasedItem) +  " " +vendingItems.getPrice(purchasedItem) + " " + remainingMoney);
                 System.out.println(vendingItems.getSound(purchasedItem));
             } else {
                 System.out.println("Not Enough Money Inserted");
             }
-
-//            try(PrintWriter pw = new PrintWriter("Log.txt")){
-//
-//                LocalDateTime currentTime =  LocalDateTime.now();
-//                pw.println(currentTime + " " +vendingItems.getName(purchasedItem) + " " + amountInserted + " " + remainingMoney);
-//            }catch (FileNotFoundException e){}
-
             purchaseMenu.displayPurchaseOption();
             option = purchaseMenu.purchaseOption();
             purchaseMenu.setAmountInserted(remainingMoney);
+
             if (option.equals("1")){
                 optionOne(purchaseMenu, option);
             }
@@ -130,18 +129,11 @@ public class VendingMachine
         return dataTransfer;
     }
 
-    public void writeToFile(String line) {
-        File outputFile = new File("Log.txt");
 
-        try(Scanner fileScanner = new Scanner(outputFile)) {
-            PrintWriter pw = new PrintWriter(outputFile);
-            pw.println(line);
-            System.out.println("Something");
 
-        } catch (FileNotFoundException e) {
-            System.out.println("no file");
-        }
-    }
+
+
+
 
 
 }

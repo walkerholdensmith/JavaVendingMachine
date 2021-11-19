@@ -3,14 +3,31 @@ package com.techelevator.models;
 import com.techelevator.application.VendingMachine;
 import com.techelevator.ui.UserOutput;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Scanner;
 
 public class PurchaseMenu  {
+
+    File outputFile = new File("Log.txt");
+
+    PrintWriter pw;
+
+    {
+        try {
+            pw = new PrintWriter("Log.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private BigDecimal amountInserted = new BigDecimal("0.00");
+    private BigDecimal moneyIn = new BigDecimal("0.00");
 
     public void purchaseMenu(){
         this.amountInserted = amountInserted;
@@ -40,18 +57,21 @@ public class PurchaseMenu  {
             System.out.println("Please insert a valid money amount: $1, $2, $5 or 10$");
             String amount = input.nextLine();
             System.out.println(amount);
-            BigDecimal moneyIn = new BigDecimal(amount);
+            this.moneyIn = new BigDecimal(amount);
             this.amountInserted = this.amountInserted.add(moneyIn);
             System.out.println("Current money Provided: $" + this.amountInserted);
+//
+
             LocalDateTime currentTime =  LocalDateTime.now();
-            VendingMachine vendingMachine = new VendingMachine();
-            vendingMachine.writeToFile(currentTime + " FEED MONEY " + moneyIn + " " + this.amountInserted);
+            pw.write(currentTime + " FEED MONEY " + moneyIn + " " + this.amountInserted + "\n");
 
-//           try(PrintWriter pw = new PrintWriter("Log.txt")){
-//               LocalDateTime currentTime =  LocalDateTime.now();
-//               pw.println(currentTime + " FEED MONEY " + moneyIn + " " + this.amountInserted);
-//           }catch (FileNotFoundException e){}
 
+
+
+    }
+
+    public BigDecimal getMoneyIn() {
+        return moneyIn;
     }
 
     public void displayPurchaseOption() {
@@ -60,6 +80,25 @@ public class PurchaseMenu  {
         System.out.println("(2) Select Product");
         System.out.println("(3) Finish Transaction");
 
+    }
+
+
+    public void optionTwoFileWrite(LocalDateTime dateTime, String name, BigDecimal amountInserted, BigDecimal remainingMoney){
+
+        LocalDateTime currentTime =  LocalDateTime.now();
+        String line = (currentTime + name + amountInserted + " " + remainingMoney + "\n");
+        String line2 = (currentTime + name + amountInserted + " " + remainingMoney + "\n");
+        pw.write(line);
+            //pw.write(line2);
+
+
+
+
+
+    }
+
+    public void closeFile(){
+        pw.close();
     }
 
 
