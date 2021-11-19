@@ -8,6 +8,7 @@ public class Chips implements Items{
     private BigDecimal price;
     private int amount;
 
+
     public Chips(String slot, String name, BigDecimal price, int amount){
        this.slot = slot;
        this.name = name;
@@ -45,5 +46,9 @@ public class Chips implements Items{
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public String getSound() {
+        return "Crunch Crunch, Yum!";
     }
 }

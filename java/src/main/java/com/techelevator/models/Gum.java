@@ -45,4 +45,8 @@ public class Gum implements Items{
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    public String getSound() {
+        return "Chew Chew, Yum!";
+    }
 }

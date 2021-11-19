@@ -140,4 +140,6 @@ public  class VendingMachineFunctions {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
+
+
 }

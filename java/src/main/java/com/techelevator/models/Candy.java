@@ -46,4 +46,8 @@ public class Candy implements Items{
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    public String getSound() {
+        return "Munch Munch, Yum!";
+    }
 }

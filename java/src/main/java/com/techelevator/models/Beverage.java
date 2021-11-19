@@ -45,6 +45,10 @@ public class Beverage extends VendingMachineFunctions implements Items {
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    public String getSound() {
+        return "Glug Glug, Yum!";
+    }
 }
 
 
