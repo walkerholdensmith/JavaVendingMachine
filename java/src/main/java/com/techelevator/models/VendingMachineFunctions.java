@@ -141,5 +141,4 @@ public  class VendingMachineFunctions {
         this.balance = balance;
     }
 
-
 }
