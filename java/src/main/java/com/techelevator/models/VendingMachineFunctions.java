@@ -82,7 +82,6 @@ public  class VendingMachineFunctions {
         vendingMachineItems.get(itemSlot).setAmount(increase);
         BigDecimal price = vendingMachineItems.get(itemSlot).getPrice();
         increaseBalance(price);
-        System.out.println(createChange(price,value));
 
     }
 
@@ -100,6 +99,7 @@ public  class VendingMachineFunctions {
         BigDecimal nickles = getDimes(change);
 
         coinChange += quarters + " " + dimes + " " + nickles;
+        this.balance = new BigDecimal("0.00");
         return coinChange;
     }
 
@@ -137,6 +137,7 @@ public  class VendingMachineFunctions {
         return this.balance;
     }
 
-
-
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
 }
