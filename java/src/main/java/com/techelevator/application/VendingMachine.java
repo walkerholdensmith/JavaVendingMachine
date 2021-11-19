@@ -37,38 +37,16 @@ public class VendingMachine
                 // make a purchase
                 purchaseMenu.displayPurchaseOption();
                 String option = purchaseMenu.purchaseOption();
-                String purchasedItem = "";
+
                 BigDecimal totalPrice = new BigDecimal("0.00");
                 if(option.equals("1")) {
-                    boolean stillAdding = true;
-
-                    while(stillAdding) {
-                        purchaseMenu.feedMoney();
-                        purchaseMenu.displayPurchaseOption();
-                        option = purchaseMenu.purchaseOption();
-                        if(!option.equals("1")) {
-                            stillAdding = false;
-                        }
-                    }
+                    option = optionOne(purchaseMenu, option);
                 }
 
-                    if (option.equals("2")) {
-                        boolean stillSelecting = true;
-                        while (stillSelecting) {
-                            vendingItems.displayItems();
-                            purchasedItem = vendingItems.itemSelection();
-                            amountInserted = purchaseMenu.getAmountInserted();
-                            vendingItems.updateItem(purchasedItem, amountInserted);
-                            purchaseMenu.displayPurchaseOption();
-                            totalPrice = totalPrice.add(vendingItems.getItemPrice(purchasedItem));
-                            System.out.println(totalPrice);
-                            option = purchaseMenu.purchaseOption();
-                            if(!option.equals("2")) {
-                                stillSelecting = false;
-                            }
-                        }
+                if (option.equals("2")) {
+                    option = optionTwo(vendingItems, purchaseMenu, totalPrice, option, amountInserted );
 
-                    }
+                }
 
 
 
@@ -87,6 +65,58 @@ public class VendingMachine
             }
         }
     }
+
+    public String optionOne(PurchaseMenu purchaseMenu, String option){
+        boolean stillAdding = true;
+
+        while(stillAdding) {
+            purchaseMenu.feedMoney();
+            purchaseMenu.displayPurchaseOption();
+            option = purchaseMenu.purchaseOption();
+            if(!option.equals("1")) {
+                stillAdding = false;
+            }
+        }
+
+        return option;
+    }
+
+    public String optionTwo(VendingMachineFunctions vendingItems, PurchaseMenu purchaseMenu, BigDecimal totalPrice, String option,BigDecimal amountInserted ){
+        String purchasedItem = "";
+        boolean stillSelecting = true;
+        BigDecimal remainingMoney = new BigDecimal("0.00");
+        while (stillSelecting) {
+            vendingItems.displayItems();
+            purchasedItem = vendingItems.itemSelection();
+            amountInserted = purchaseMenu.getAmountInserted();
+            vendingItems.updateItem(purchasedItem, amountInserted);
+            totalPrice = totalPrice.add(vendingItems.getItemPrice(purchasedItem));
+            if (amountInserted.compareTo(totalPrice) == 1){
+                remainingMoney = amountInserted.subtract(totalPrice);
+                System.out.println(vendingItems.getName(purchasedItem) +  " " +vendingItems.getPrice(purchasedItem) + " " + remainingMoney);
+                System.out.println(vendingItems.getSound(purchasedItem));
+            } else {
+                System.out.println("Not Enough Money Inserted");
+            }
+
+            purchaseMenu.displayPurchaseOption();
+            option = purchaseMenu.purchaseOption();
+            if (option.equals("1")){
+                optionOne(purchaseMenu, option);
+            }
+            else if(!option.equals("2")) {
+                stillSelecting = false;
+            }
+        }
+
+        purchaseMenu.setAmountInserted(remainingMoney);
+
+
+
+        return option;
+    }
+
+
 
 
 
