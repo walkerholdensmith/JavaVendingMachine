@@ -7,6 +7,8 @@ public interface Items{
     String getName();
     BigDecimal getPrice();
     int getAmount();
+    String getSound();
+
 
     public void setAmount(int amount);
 

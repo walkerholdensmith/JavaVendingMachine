@@ -38,7 +38,7 @@ public  class VendingMachineFunctions {
                     String type = itemList[3];
                     int amount = Integer.parseInt(itemList[4]);
 
-                    if (type.equals("Chips")){
+                    if (type.equals("Chip")){
                         Chips newItem = new Chips(slot,name,price,amount);
                         vendingMachineItems.put(slot,newItem);
 
@@ -140,5 +140,21 @@ public  class VendingMachineFunctions {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
+
+
+    public String getSound(String itemSlot){
+        return vendingMachineItems.get(itemSlot).getSound();
+    }
+
+    public String getName(String itemSlot){
+        return vendingMachineItems.get(itemSlot).getName();
+    }
+
+    public BigDecimal getPrice(String itemSlot){
+        return vendingMachineItems.get(itemSlot).getPrice();
+    }
+
+
+
 
 }
