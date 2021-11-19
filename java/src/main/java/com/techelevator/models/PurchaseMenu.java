@@ -1,8 +1,12 @@
 package com.techelevator.models;
 
+import com.techelevator.application.VendingMachine;
 import com.techelevator.ui.UserOutput;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class PurchaseMenu  {
@@ -39,6 +43,14 @@ public class PurchaseMenu  {
             BigDecimal moneyIn = new BigDecimal(amount);
             this.amountInserted = this.amountInserted.add(moneyIn);
             System.out.println("Current money Provided: $" + this.amountInserted);
+            LocalDateTime currentTime =  LocalDateTime.now();
+            VendingMachine vendingMachine = new VendingMachine();
+            vendingMachine.writeToFile(currentTime + " FEED MONEY " + moneyIn + " " + this.amountInserted);
+
+//           try(PrintWriter pw = new PrintWriter("Log.txt")){
+//               LocalDateTime currentTime =  LocalDateTime.now();
+//               pw.println(currentTime + " FEED MONEY " + moneyIn + " " + this.amountInserted);
+//           }catch (FileNotFoundException e){}
 
     }
 

@@ -7,7 +7,11 @@ import com.techelevator.ui.UserOutput;
 
 
 import javax.swing.plaf.synth.SynthOptionPaneUI;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -22,6 +26,9 @@ public class VendingMachine
         PurchaseMenu purchaseMenu = new PurchaseMenu();
         BigDecimal amountInserted = new BigDecimal("0.00");
         List<Object> dataTransferList = new ArrayList<Object>();
+
+
+
         while(true)
         {
             UserOutput.displayHomeScreen();
@@ -101,6 +108,12 @@ public class VendingMachine
                 System.out.println("Not Enough Money Inserted");
             }
 
+//            try(PrintWriter pw = new PrintWriter("Log.txt")){
+//
+//                LocalDateTime currentTime =  LocalDateTime.now();
+//                pw.println(currentTime + " " +vendingItems.getName(purchasedItem) + " " + amountInserted + " " + remainingMoney);
+//            }catch (FileNotFoundException e){}
+
             purchaseMenu.displayPurchaseOption();
             option = purchaseMenu.purchaseOption();
             purchaseMenu.setAmountInserted(remainingMoney);
@@ -117,12 +130,18 @@ public class VendingMachine
         return dataTransfer;
     }
 
+    public void writeToFile(String line) {
+        File outputFile = new File("Log.txt");
 
+        try(Scanner fileScanner = new Scanner(outputFile)) {
+            PrintWriter pw = new PrintWriter(outputFile);
+            pw.println(line);
+            System.out.println("Something");
 
-
-
-
-
+        } catch (FileNotFoundException e) {
+            System.out.println("no file");
+        }
+    }
 
 
 }
