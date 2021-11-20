@@ -146,7 +146,6 @@ public  class VendingMachineFunctions {
         this.balance = balance;
     }
 
-
     public String getSound(String itemSlot){
         return vendingMachineItems.get(itemSlot).getSound();
     }
@@ -158,8 +157,6 @@ public  class VendingMachineFunctions {
     public BigDecimal getPrice(String itemSlot){
         return vendingMachineItems.get(itemSlot).getPrice();
     }
-
-
 
 
 }

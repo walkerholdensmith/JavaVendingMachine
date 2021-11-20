@@ -64,7 +64,7 @@ public class PurchaseMenu {
         //this.setAmountInserted(this.amountInserted.add(moneyIn));     Having this here added a double count after adding money
         this.setMoneyIn(this.moneyIn);
         System.out.println("Current money Provided: $" + this.amountInserted);
-        
+
 
 
 

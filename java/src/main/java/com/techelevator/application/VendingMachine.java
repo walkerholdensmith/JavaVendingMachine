@@ -127,6 +127,7 @@ PrintWriter pw;
     }
 
     public List<Object> optionTwo(VendingMachineFunctions vendingItems, PurchaseMenu purchaseMenu, BigDecimal totalPrice, String option,BigDecimal amountInserted, List<Object> dataTransfer ){
+
         String purchasedItem = "";
         boolean stillSelecting = true;
         BigDecimal remainingMoney = new BigDecimal("0.00");
@@ -181,6 +182,8 @@ PrintWriter pw;
         dataTransfer.add(amountInserted);
         return dataTransfer;
     }
+
+
 
 
 
