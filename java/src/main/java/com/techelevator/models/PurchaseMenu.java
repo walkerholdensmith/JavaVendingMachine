@@ -8,7 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.nio.file.StandardOpenOption;
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -59,9 +61,12 @@ public class PurchaseMenu {
         System.out.println(amount);
         this.moneyIn = new BigDecimal(amount);
         this.amountInserted = this.amountInserted.add(moneyIn);
-        this.setAmountInserted(this.amountInserted.add(moneyIn));
+        //this.setAmountInserted(this.amountInserted.add(moneyIn));     Having this here added a double count after adding money
         this.setMoneyIn(this.moneyIn);
         System.out.println("Current money Provided: $" + this.amountInserted);
+        
+
+
 
 
 //
@@ -80,11 +85,15 @@ public class PurchaseMenu {
         this.moneyIn = newAmount;
     }
 
+
+
+
     public void displayPurchaseOption() {
 
         System.out.println("(1) Feed Money");
         System.out.println("(2) Select Product");
         System.out.println("(3) Finish Transaction");
+        System.out.println("\n Current Money Provided: $" + this.amountInserted);
 
     }
 }

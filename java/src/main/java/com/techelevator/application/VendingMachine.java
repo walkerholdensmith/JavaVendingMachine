@@ -11,15 +11,28 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class VendingMachine
 {
 //    LogFileHandling outputFile = new LogFileHandling();
+PrintWriter pw;
     public void run()
+    {
+
 
     {
+        try {
+            pw = new PrintWriter("Log.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
         VendingMachineFunctions vendingItems = new VendingMachineFunctions();
         vendingItems.populateMap();
@@ -44,6 +57,11 @@ public class VendingMachine
                 String option = purchaseMenu.purchaseOption();
 
                 BigDecimal totalPrice = new BigDecimal("0.00");
+                if(!option.equals("1") || !option.equals("2") || !option.equals("3")) {
+                    System.out.println("Not a valid option!");
+                    purchaseMenu.displayPurchaseOption();
+                     option = purchaseMenu.purchaseOption();
+                }
                 if(option.equals("1")) {
                     option = optionOne(purchaseMenu, option);
 
@@ -52,6 +70,14 @@ public class VendingMachine
                 if (option.equals("2")) {
                     dataTransferList = optionTwo(vendingItems, purchaseMenu, totalPrice, option, amountInserted, dataTransferList );
                     option = dataTransferList.get(0).toString();
+
+
+                    if(!option.equals("1") || !option.equals("2") || !option.equals("3")) {
+                        System.out.println("Not a valid option!");
+                        purchaseMenu.displayPurchaseOption();
+                        option = purchaseMenu.purchaseOption();
+                    }
+
                     totalPrice = new BigDecimal(dataTransferList.get(1).toString());
                     amountInserted = new BigDecimal(dataTransferList.get(2).toString());
 
@@ -62,7 +88,8 @@ public class VendingMachine
                     System.out.println(vendingItems.createChange(totalPrice, amountInserted));
                     System.out.println(vendingItems.getBalance());
                     purchaseMenu.setAmountInserted(new BigDecimal("0.00"));
-                    //outputFile.closeFile();
+                    pw.println(">\\`\\`\\`");
+                    pw.close();
                 }
 
             }
@@ -82,6 +109,15 @@ public class VendingMachine
             //outputFile.optionOneFileWrite(purchaseMenu.getMoneyIn(), purchaseMenu.getAmountInserted());
             purchaseMenu.displayPurchaseOption();
             option = purchaseMenu.purchaseOption();
+
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd KK:mm:ss a");
+            String formatDateTime = now.format(formatter);
+
+            DateTimeFormatter hoursSeconds = DateTimeFormatter.ofPattern("KK:mm:ss a", Locale.ENGLISH);
+
+            pw.println(">" + formatDateTime +  " FEED MONEY \\" + purchaseMenu.getMoneyIn() + " \\" + purchaseMenu.getAmountInserted());
+
 
             if(!option.equals("1")) {
                 stillAdding = false;
@@ -107,11 +143,23 @@ public class VendingMachine
             totalPrice = totalPrice.add(vendingItems.getItemPrice(purchasedItem));
             if (amountInserted.compareTo(totalPrice) == 1){
                 remainingMoney = amountInserted.subtract(totalPrice);
-                LocalDateTime currentTime =  LocalDateTime.now();
-                //outputFile.optionTwoFileWrite(vendingItems.getName(purchasedItem), remainingMoney );
+
+                purchaseMenu.setAmountInserted(remainingMoney);
+
+
 
                 System.out.println(vendingItems.getName(purchasedItem) +  " " +vendingItems.getPrice(purchasedItem) + " " + remainingMoney);
                 System.out.println(vendingItems.getSound(purchasedItem));
+
+
+
+                LocalDateTime currentTime = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd KK:mm:ss a");
+                String formatDateTime = currentTime.format(formatter);
+                String line = (">" + formatDateTime + " " + vendingItems.getName(purchasedItem) +" \\" + amountInserted + " \\" + remainingMoney);
+                pw.println(line);
+
+
             } else {
                 System.out.println("Not Enough Money Inserted");
             }
@@ -124,6 +172,8 @@ public class VendingMachine
             }
             else if(!option.equals("2")) {
                 stillSelecting = false;
+            } else if(option.equals("2")) {
+                totalPrice = new BigDecimal("0.00");
             }
         }
         dataTransfer.add(option);
