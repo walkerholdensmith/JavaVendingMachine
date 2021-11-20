@@ -1,5 +1,6 @@
 package com.techelevator.application;
 
+import com.techelevator.models.LogFileHandling;
 import com.techelevator.models.PurchaseMenu;
 import com.techelevator.models.VendingMachineFunctions;
 import com.techelevator.ui.UserInput;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class VendingMachine
 {
-
+//    LogFileHandling outputFile = new LogFileHandling();
     public void run()
 
     {
@@ -61,7 +62,7 @@ public class VendingMachine
                     System.out.println(vendingItems.createChange(totalPrice, amountInserted));
                     System.out.println(vendingItems.getBalance());
                     purchaseMenu.setAmountInserted(new BigDecimal("0.00"));
-                    purchaseMenu.closeFile();
+                    //outputFile.closeFile();
                 }
 
             }
@@ -78,6 +79,7 @@ public class VendingMachine
 
         while(stillAdding) {
             purchaseMenu.feedMoney();
+            //outputFile.optionOneFileWrite(purchaseMenu.getMoneyIn(), purchaseMenu.getAmountInserted());
             purchaseMenu.displayPurchaseOption();
             option = purchaseMenu.purchaseOption();
 
@@ -106,7 +108,8 @@ public class VendingMachine
             if (amountInserted.compareTo(totalPrice) == 1){
                 remainingMoney = amountInserted.subtract(totalPrice);
                 LocalDateTime currentTime =  LocalDateTime.now();
-                purchaseMenu.optionTwoFileWrite(currentTime, vendingItems.getName(purchasedItem), amountInserted, remainingMoney);
+                //outputFile.optionTwoFileWrite(vendingItems.getName(purchasedItem), remainingMoney );
+
                 System.out.println(vendingItems.getName(purchasedItem) +  " " +vendingItems.getPrice(purchasedItem) + " " + remainingMoney);
                 System.out.println(vendingItems.getSound(purchasedItem));
             } else {
