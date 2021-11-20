@@ -71,12 +71,24 @@ public  class VendingMachineFunctions {
 
     }
 
+    public boolean isInMachine(String itemSlot){
+        Items value = vendingMachineItems.get(itemSlot);
+        if (value != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     public int getAmount(String itemSlot){
+
         return vendingMachineItems.get(itemSlot).getAmount();
     }
 
     public String itemSelection() {
         System.out.println("Please select and item based on slot number");
+
         String slotNumber = userInputScanner.nextLine();
         return slotNumber;
     }

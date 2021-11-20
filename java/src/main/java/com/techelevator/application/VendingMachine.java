@@ -7,6 +7,7 @@ import com.techelevator.ui.UserInput;
 import com.techelevator.ui.UserOutput;
 
 
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -19,10 +20,9 @@ import java.util.Scanner;
 
 public class VendingMachine
 {
-//    LogFileHandling outputFile = new LogFileHandling();
+
 PrintWriter pw;
-    public void run()
-    {
+    public void run() {
 
 
     {
@@ -47,7 +47,6 @@ PrintWriter pw;
 
             if(choice.equals("display"))
             {
-
                 vendingItems.displayItems();
             }
             else if(choice.equals("purchase"))
@@ -55,36 +54,24 @@ PrintWriter pw;
                 // make a purchase
                 purchaseMenu.displayPurchaseOption();
                 String option = purchaseMenu.purchaseOption();
-
-                BigDecimal totalPrice = new BigDecimal("0.00");
-                if(!option.equals("1") || !option.equals("2") || !option.equals("3")) {
-                    System.out.println("Not a valid option!");
+                while (!checkIsValid(option)){
                     purchaseMenu.displayPurchaseOption();
-                     option = purchaseMenu.purchaseOption();
+                    option = purchaseMenu.purchaseOption();
                 }
+                BigDecimal totalPrice = new BigDecimal("0.00");
+
                 if(option.equals("1")) {
                     option = optionOne(purchaseMenu, option);
-
                 }
 
                 if (option.equals("2")) {
                     dataTransferList = optionTwo(vendingItems, purchaseMenu, totalPrice, option, amountInserted, dataTransferList );
                     option = dataTransferList.get(0).toString();
 
-
-                    if(!option.equals("1") || !option.equals("2") || !option.equals("3")) {
-                        System.out.println("Not a valid option!");
-                        purchaseMenu.displayPurchaseOption();
-                        option = purchaseMenu.purchaseOption();
-                    }
-
                     totalPrice = new BigDecimal(dataTransferList.get(1).toString());
                     amountInserted = new BigDecimal(dataTransferList.get(2).toString());
-
                 }
-
                 if (option.equals("3")){
-                    //BigDecimal itemPrice = vendingItems.getItemPrice(purchasedItem);
                     System.out.println(vendingItems.createChange(totalPrice, amountInserted));
                     System.out.println(vendingItems.getBalance());
                     purchaseMenu.setAmountInserted(new BigDecimal("0.00"));
@@ -106,7 +93,6 @@ PrintWriter pw;
 
         while(stillAdding) {
             purchaseMenu.feedMoney();
-            //outputFile.optionOneFileWrite(purchaseMenu.getMoneyIn(), purchaseMenu.getAmountInserted());
             purchaseMenu.displayPurchaseOption();
             option = purchaseMenu.purchaseOption();
 
@@ -117,7 +103,6 @@ PrintWriter pw;
             DateTimeFormatter hoursSeconds = DateTimeFormatter.ofPattern("KK:mm:ss a", Locale.ENGLISH);
 
             pw.println(">" + formatDateTime +  " FEED MONEY \\" + purchaseMenu.getMoneyIn() + " \\" + purchaseMenu.getAmountInserted());
-
 
             if(!option.equals("1")) {
                 stillAdding = false;
@@ -134,32 +119,32 @@ PrintWriter pw;
         while (stillSelecting) {
             vendingItems.displayItems();
             purchasedItem = vendingItems.itemSelection();
-            if (vendingItems.getAmount(purchasedItem) == 0){
-                System.out.println("SOLD OUT");
+            while(!vendingItems.isInMachine(purchasedItem)){
+                System.out.println("\nInvalid selection!");
                 purchaseMenu.displayPurchaseOption();
                 option = purchaseMenu.purchaseOption();
             }
+            if (vendingItems.getAmount(purchasedItem) == 0){
+                System.out.println("SOLD OUT");
+                vendingItems.displayItems();
+                purchaseMenu.displayPurchaseOption();
+                option = purchaseMenu.purchaseOption();
+            }
+
             amountInserted = purchaseMenu.getAmountInserted();
             vendingItems.updateItem(purchasedItem, amountInserted);
             totalPrice = totalPrice.add(vendingItems.getItemPrice(purchasedItem));
             if (amountInserted.compareTo(totalPrice) == 1){
+
                 remainingMoney = amountInserted.subtract(totalPrice);
-
                 purchaseMenu.setAmountInserted(remainingMoney);
-
-
-
                 System.out.println(vendingItems.getName(purchasedItem) +  " " +vendingItems.getPrice(purchasedItem) + " " + remainingMoney);
                 System.out.println(vendingItems.getSound(purchasedItem));
-
-
-
                 LocalDateTime currentTime = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd KK:mm:ss a");
                 String formatDateTime = currentTime.format(formatter);
                 String line = (">" + formatDateTime + " " + vendingItems.getName(purchasedItem) +" \\" + amountInserted + " \\" + remainingMoney);
                 pw.println(line);
-
 
             } else {
                 System.out.println("Not Enough Money Inserted");
@@ -184,11 +169,13 @@ PrintWriter pw;
     }
 
 
-
-
-
-
-
+    public Boolean checkIsValid(String option){
+        if (!option.equals("1") || !option.equals("2") || !option.equals("3")){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 
