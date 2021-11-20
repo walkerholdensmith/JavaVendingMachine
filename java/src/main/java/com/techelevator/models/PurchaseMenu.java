@@ -17,15 +17,6 @@ import java.util.Scanner;
 public class PurchaseMenu {
 
 
-//    PrintWriter pw;
-//
-//    {
-//        try {
-//            pw = new PrintWriter("Log.txt");
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     private BigDecimal amountInserted = new BigDecimal("0.00");
     private BigDecimal moneyIn = new BigDecimal("0.00");
@@ -64,16 +55,6 @@ public class PurchaseMenu {
         //this.setAmountInserted(this.amountInserted.add(moneyIn));     Having this here added a double count after adding money
         this.setMoneyIn(this.moneyIn);
         System.out.println("Current money Provided: $" + this.amountInserted);
-        
-
-
-
-
-//
-
-//            LocalDateTime currentTime =  LocalDateTime.now();
-//            pw.write(currentTime + " FEED MONEY " + moneyIn + " " + this.amountInserted + "\n");
-
 
     }
 
@@ -93,32 +74,10 @@ public class PurchaseMenu {
         System.out.println("(1) Feed Money");
         System.out.println("(2) Select Product");
         System.out.println("(3) Finish Transaction");
-        System.out.println("\n Current Money Provided: $" + this.amountInserted);
+        System.out.println("\nCurrent Money Provided: $" + this.amountInserted);
+        System.out.println("Please enter a valid option: ");
+
 
     }
 }
 
-
-//    public void optionTwoFileWrite(LocalDateTime dateTime, String name, BigDecimal amountInserted, BigDecimal remainingMoney){
-//
-//        LocalDateTime currentTime =  LocalDateTime.now();
-//        String line = (currentTime + name + amountInserted + " " + remainingMoney + "\n");
-//        String line2 = (currentTime + name + amountInserted + " " + remainingMoney + "\n");
-//        pw.write(line);
-            //pw.write(line2);
-
-
-
-
-
-//    }
-
-//    public void closeFile(){
-//        pw.close();
-//    }
-//
-//
-//
-//
-//
-//}
