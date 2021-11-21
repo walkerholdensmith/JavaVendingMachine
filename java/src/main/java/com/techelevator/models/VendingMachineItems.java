@@ -63,7 +63,6 @@ public class VendingMachineItems extends VendingMachineFileManager{
         }
 
     }
-
     public Map<String, Items> getVendingMachineItems() {
         return this.populatedItemMap;
     }
@@ -81,7 +80,6 @@ public class VendingMachineItems extends VendingMachineFileManager{
             return false;
         }
     }
-
 
     public boolean soldOutCheck(String purchasedItem){
         if (getAmount(purchasedItem) == 0){
