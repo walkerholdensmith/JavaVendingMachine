@@ -76,7 +76,8 @@ public class VendingMachineItems extends VendingMachineFileManager{
     }
 
     public boolean isInMachine(String itemSlot){
-        return populatedItemMap.containsKey(itemSlot);
+         return populatedItemMap.containsKey(itemSlot);
+
     }
 
     public boolean soldOutCheck(String purchasedItem){

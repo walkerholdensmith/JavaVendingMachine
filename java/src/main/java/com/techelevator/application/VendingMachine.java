@@ -2,6 +2,7 @@
 
 package com.techelevator.application;
 
+
 import com.techelevator.models.PurchaseOption;
 import com.techelevator.models.VendingMachineItems;
 import com.techelevator.ui.UserInput;
@@ -20,10 +21,22 @@ public class VendingMachine {
                 purchaseOption.displayPurchaseOption();
             } else if (choice.equals("exit")){
                 break;
+            } else {
+                System.out.println("Invalid Option");
             }
         }
+
     }
 
 
+
+
 }
+
+
+
+
+
+
+
 
