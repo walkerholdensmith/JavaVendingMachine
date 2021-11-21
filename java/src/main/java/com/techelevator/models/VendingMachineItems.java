@@ -11,6 +11,9 @@ public class VendingMachineItems extends VendingMachineFileManager{
 
     private Map<String , Items > vendingMachineItems = new HashMap<>();
     private Map<String , Items > populatedItemMap = populateMap();
+
+
+
     public Map<String , Items > populateMap() {
         Scanner fileScanner;
         File machineItems = super.getMachineItems();
@@ -56,7 +59,7 @@ public class VendingMachineItems extends VendingMachineFileManager{
 
     public void displayItems(){
 
-        for (Items item : populatedItemMap.values()){
+        for (Items item : this.populatedItemMap.values()){
 
             System.out.println("Slot: " + item.getSlot() + " Name: " + item.getName() + " Price: $" + item.getPrice() + " Amount: " + item.getAmount());
 

@@ -1,6 +1,8 @@
 package com.techelevator.models;
 
 import com.techelevator.application.VendingMachine;
+import com.techelevator.ui.UserInput;
+import com.techelevator.ui.UserOutput;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -9,7 +11,7 @@ import java.math.RoundingMode;
 import java.util.Map;
 import java.util.Scanner;
 
-public class PurchaseOption extends VendingMachineItems{
+public class PurchaseOption {
 
 
     private BigDecimal balance = new BigDecimal("0.00");
@@ -18,36 +20,29 @@ public class PurchaseOption extends VendingMachineItems{
     private String purchasedItem = "";
     private BigDecimal remainingMoney = new BigDecimal("0.00");
     private Scanner input = new Scanner(System.in);
-    VendingMachineFileManager outFile = new VendingMachineFileManager();
+    private VendingMachineFileManager outFile = new VendingMachineFileManager();
+    private VendingMachineItems populatedMap;
+    private UserOutput userOutput = new UserOutput();
+    private UserInput userInput = new UserInput();
 
     private PrintWriter pw;
 
-//    {
-//        try {
-//            pw = new PrintWriter("Log.txt");
-//        } catch (FileNotFoundException fileNotFoundException) {
-//            fileNotFoundException.printStackTrace();
-//        }
-//    }
+    public PurchaseOption(VendingMachineItems populatedMap){
+        this.populatedMap = populatedMap;
+
+    }
 
     public void displayPurchaseOption() {
 
-        System.out.println("(1) Feed Money");
-        System.out.println("(2) Select Product");
-        System.out.println("(3) Finish Transaction");
-        System.out.println("\nCurrent Money Provided: \\$" + this.balance);
-        System.out.println("Please enter a valid option: ");
-        this.option = input.nextLine();
+        this.option = userInput.purchaseOptions(this.balance);
         if (this.option.equals("1")){
             runOptionOne();
-
-
         } else if (this.option.equals("2")){
             runOptionTwo();
         } else if (this.option.equals("3")){
             runOptionThree();
         } else {
-            System.out.println("Invalid Option");
+            userOutput.invalidOption();
             displayPurchaseOption();
         }
 
@@ -58,10 +53,7 @@ public class PurchaseOption extends VendingMachineItems{
         while (stillAdding){
             feedMoney();
             displayPurchaseOption();
-            //String line = " FEED MONEY \\" + moneyIn + " \\" + balance;
-            //outFile.writeToFile(line);
             if(!this.option.equals("1")) {
-
                 stillAdding = false;
             }
         }
@@ -71,25 +63,31 @@ public class PurchaseOption extends VendingMachineItems{
         boolean stillSelecting = true;
         String line = "";
         while(stillSelecting){
-            super.displayItems();
-            this.purchasedItem = itemSelection();
-            if(!super.isInMachine(this.purchasedItem)) {
+
+            populatedMap.displayItems();
+            this.purchasedItem = userInput.itemSelection();
+            if(!populatedMap.isInMachine(this.purchasedItem)) {
+
                 System.out.println("Not in Machine");
                 displayPurchaseOption();
             }
-            if (super.soldOutCheck(this.purchasedItem)){
+           if (populatedMap.soldOutCheck(this.purchasedItem)){
+
                 System.out.println("SOLD OUT!");
-                super.displayItems();
+                populatedMap.displayItems();
                 displayPurchaseOption();
             }
-            if(this.balance.compareTo(super.getItemPrice(purchasedItem)) == 1) {
-                super.updateItem(this.purchasedItem);
-                this.balance = (this.balance.subtract(super.getItemPrice(this.purchasedItem)));
-                line =  super.getName(this.purchasedItem) +" \\$" + this.moneyIn.setScale(2, RoundingMode.HALF_UP) + " \\$" + this.balance ;
+          if(this.balance.compareTo(populatedMap.getItemPrice(purchasedItem)) == 1) {
+
+
+                populatedMap.updateItem(this.purchasedItem);
+                this.balance = (this.balance.subtract(populatedMap.getItemPrice(this.purchasedItem)));
+
+                line =  populatedMap.getName(this.purchasedItem) +" \\$" + this.moneyIn.setScale(2, RoundingMode.HALF_UP) + " \\$" + this.balance ;
                 outFile.writeToFile(line);
-                this.moneyIn = this.moneyIn.subtract(super.getItemPrice(purchasedItem));
+                this.moneyIn = this.moneyIn.subtract(populatedMap.getItemPrice(purchasedItem));
             } else {
-                System.out.println("Not enough money inserted");
+                userOutput.notEnoughMoney();
             }
             displayPurchaseOption();
 
@@ -97,8 +95,6 @@ public class PurchaseOption extends VendingMachineItems{
                 stillSelecting = false;
             }
         }
-
-
 
     }
 
@@ -111,13 +107,6 @@ public class PurchaseOption extends VendingMachineItems{
         outFile.closeWriteFile();
     }
 
-
-    public String itemSelection() {
-        System.out.println("Please select and item based on slot number");
-        String slotNumber = input.nextLine();
-        return slotNumber;
-    }
-
     public void setMoneyIn(BigDecimal moneyIn) {
         this.moneyIn = moneyIn;
     }
@@ -126,42 +115,55 @@ public class PurchaseOption extends VendingMachineItems{
     }
 
     public void feedMoney(){
-        System.out.println("Please insert a valid money amount: $1, $2, $5 or 10$");
 
-        BigDecimal amount = new BigDecimal(input.nextLine());
+        String amount = userInput.moneyInserted();
         boolean rightAmount = isValidDollar(amount);
         while (!rightAmount) {
             System.out.println("Enter a valid amount");
-            amount = new BigDecimal(input.nextLine());
+
+            amount = input.nextLine();
             rightAmount = isValidDollar(amount);
         }
-
-        this.moneyIn = amount;
+        BigDecimal numAmount = new BigDecimal(amount);
+        this.moneyIn = numAmount;
         this.balance = this.balance.add(moneyIn);
-        //this.setAmountInserted(this.amountInserted.add(moneyIn));     Having this here added a double count after adding money
         this.setMoneyIn(this.moneyIn);
-        System.out.println("Current money Provided: $" + this.balance);
+        userOutput.currentMoneyProvided(this.balance);
         String line = "FEED MONEY \\$" + moneyIn.setScale(2,RoundingMode.HALF_UP) + " \\$" + balance;
         outFile.writeToFile(line);
 
-
     }
 
-    public boolean isValidDollar(BigDecimal amount) {
+    public boolean isValidDollar(String amount) {
+
         boolean isTrue = false;
-        if(amount.compareTo(new BigDecimal("10")) == 0) {
+
+        if(amount.equals("10")){
             isTrue = true;
         }
-        if(amount.compareTo(new BigDecimal("5")) == 0) {
+        else if(amount.equals("5")) {
             isTrue = true;
         }
-        if(amount.compareTo(new BigDecimal("2")) == 0) {
+        else if(amount.equals("2")) {
             isTrue = true;
         }
-        if(amount.compareTo(new BigDecimal("1")) == 0) {
+        else if(amount.equals("1")) {
             isTrue = true;
+        } else {
+            isTrue = false;
         }
         return isTrue;
+    }
+
+    public boolean isANum(String amount){
+        boolean isANum = true;
+        for (int i = 0; i < amount.length(); i++) {
+            char c = amount.charAt(i);
+            if (c < '0' || c > '9') {
+                isANum = false;
+            }
+        }
+        return isANum;
     }
 
     public String createChange(BigDecimal price, BigDecimal amount){

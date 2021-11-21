@@ -26,7 +26,6 @@ public class VendingMachineFileManager {
         }
     }
 
-
     public File getMachineItems() {
         return machineItems;
     }
@@ -35,24 +34,12 @@ public class VendingMachineFileManager {
         return fileScanner;
     }
 
-
     public void writeToFile(String line){
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd KK:mm:ss a");
         String formatDateTime = now.format(formatter);
         pw.println(">" + formatDateTime + " " + line);
     }
-
-
-//    public void writeToFile(String line){
-//
-//        LocalDateTime now = LocalDateTime.now();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd KK:mm:ss a");
-//        String formatDateTime = now.format(formatter);
-//        pw.println(line);
-//        pw.close();
-//
-//    }
 
     public void closeWriteFile(){
         pw.close();

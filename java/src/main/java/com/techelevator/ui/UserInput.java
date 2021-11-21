@@ -14,16 +14,8 @@ public class UserInput
 
     public static String getHomeScreenOption()
     {
-        System.out.println("What would you like to do?");
-        System.out.println();
 
-        System.out.println("1) Display Vending Machine Items");
-        System.out.println("2) Purchase");
-        System.out.println("3) Exit");
-
-        System.out.println();
-        System.out.print("Please select an option: ");
-
+        UserOutput.homeScreenOptionsMessage();
         String selectedOption = scanner.nextLine();
         String option = selectedOption.trim().toLowerCase();
 
@@ -45,6 +37,29 @@ public class UserInput
         }
 
     }
+
+    public static String moneyInserted(){
+        UserOutput.moneyInsertedMessage();
+        String selectedOption = scanner.nextLine();
+        return selectedOption;
+    }
+
+    public static String purchaseOptions(BigDecimal balance) {
+
+        UserOutput.purchaseOptionsMenu(balance);
+        String option = scanner.nextLine();
+        return option;
+
+    }
+
+    public static String itemSelection(){
+        System.out.println("Please select and item based on slot number");
+        String slotNumber = scanner.nextLine();
+        return slotNumber;
+    }
+
+
+
 
     
 }
