@@ -16,6 +16,17 @@ public class VendingMachineFileManager {
 
     private Scanner fileScanner;
 
+    PrintWriter pw;
+
+    {
+        try {
+            pw = new PrintWriter(output);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public File getMachineItems() {
         return machineItems;
     }
@@ -26,12 +37,10 @@ public class VendingMachineFileManager {
 
 
     public void writeToFile(String line){
-        try ( PrintWriter pw = new PrintWriter(output) ) {
-            pw.println(line);
-
-        } catch (FileNotFoundException e) {
-
-        }
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd KK:mm:ss a");
+        String formatDateTime = now.format(formatter);
+        pw.println(">" + formatDateTime + " " + line);
     }
 
 
@@ -45,8 +54,11 @@ public class VendingMachineFileManager {
 //
 //    }
 
-//    public void closeWriteFile(){
-//        pw.close();
-//    }
+    public void closeWriteFile(){
+        pw.close();
+    }
 
 }
+
+
+

@@ -5,6 +5,7 @@ import com.techelevator.application.VendingMachine;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -34,7 +35,7 @@ public class PurchaseOption extends VendingMachineItems{
         System.out.println("(1) Feed Money");
         System.out.println("(2) Select Product");
         System.out.println("(3) Finish Transaction");
-        System.out.println("\nCurrent Money Provided: $" + this.balance);
+        System.out.println("\nCurrent Money Provided: \\$" + this.balance);
         System.out.println("Please enter a valid option: ");
         this.option = input.nextLine();
         if (this.option.equals("1")){
@@ -45,7 +46,9 @@ public class PurchaseOption extends VendingMachineItems{
             runOptionTwo();
         } else if (this.option.equals("3")){
             runOptionThree();
-
+        } else {
+            System.out.println("Invalid Option");
+            displayPurchaseOption();
         }
 
     }
@@ -55,8 +58,8 @@ public class PurchaseOption extends VendingMachineItems{
         while (stillAdding){
             feedMoney();
             displayPurchaseOption();
-            String line = " FEED MONEY \\" + moneyIn + " \\" + balance;
-            outFile.writeToFile(line);
+            //String line = " FEED MONEY \\" + moneyIn + " \\" + balance;
+            //outFile.writeToFile(line);
             if(!this.option.equals("1")) {
 
                 stillAdding = false;
@@ -66,33 +69,46 @@ public class PurchaseOption extends VendingMachineItems{
 
     public void runOptionTwo(){
         boolean stillSelecting = true;
+        String line = "";
         while(stillSelecting){
             super.displayItems();
             this.purchasedItem = itemSelection();
-            System.out.println(super.getAmount(this.purchasedItem));
+            if(!super.isInMachine(this.purchasedItem)) {
+                System.out.println("Not in Machine");
+                displayPurchaseOption();
+            }
             if (super.soldOutCheck(this.purchasedItem)){
                 System.out.println("SOLD OUT!");
                 super.displayItems();
                 displayPurchaseOption();
             }
-
-            super.updateItem(this.purchasedItem);
-            this.balance = this.balance.subtract(super.getItemPrice(this.purchasedItem));
+            if(this.balance.compareTo(super.getItemPrice(purchasedItem)) == 1) {
+                super.updateItem(this.purchasedItem);
+                this.balance = (this.balance.subtract(super.getItemPrice(this.purchasedItem)));
+                line =  super.getName(this.purchasedItem) +" \\$" + this.moneyIn.setScale(2, RoundingMode.HALF_UP) + " \\$" + this.balance ;
+                outFile.writeToFile(line);
+                this.moneyIn = this.moneyIn.subtract(super.getItemPrice(purchasedItem));
+            } else {
+                System.out.println("Not enough money inserted");
+            }
             displayPurchaseOption();
-
-            String line =  super.getName(this.purchasedItem) +" \\" + this.balance + " \\" + moneyIn.subtract(balance);
-            outFile.writeToFile(line);
 
             if(!this.option.equals("2")) {
                 stillSelecting = false;
             }
         }
+
+
+
     }
 
     public void runOptionThree(){
-        System.out.println(createChange(this.balance, this.moneyIn));
+        System.out.println(this.balance);
+        outFile.writeToFile("CREATE CHANGE: \\$" + this.balance + " \\$" + this.balance.subtract(this.balance));
+        String line = (createChange(this.balance, this.moneyIn.subtract(this.balance)));
+        System.out.println(line);
         this.setMoneyIn(new BigDecimal("0.00"));
-
+        outFile.closeWriteFile();
     }
 
 
@@ -105,30 +121,61 @@ public class PurchaseOption extends VendingMachineItems{
     public void setMoneyIn(BigDecimal moneyIn) {
         this.moneyIn = moneyIn;
     }
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
 
     public void feedMoney(){
         System.out.println("Please insert a valid money amount: $1, $2, $5 or 10$");
-        String amount = input.nextLine();
-        System.out.println(amount);
-        this.moneyIn = new BigDecimal(amount);
+
+        BigDecimal amount = new BigDecimal(input.nextLine());
+        boolean rightAmount = isValidDollar(amount);
+        while (!rightAmount) {
+            System.out.println("Enter a valid amount");
+            amount = new BigDecimal(input.nextLine());
+            rightAmount = isValidDollar(amount);
+        }
+
+        this.moneyIn = amount;
         this.balance = this.balance.add(moneyIn);
         //this.setAmountInserted(this.amountInserted.add(moneyIn));     Having this here added a double count after adding money
         this.setMoneyIn(this.moneyIn);
         System.out.println("Current money Provided: $" + this.balance);
+        String line = "FEED MONEY \\$" + moneyIn.setScale(2,RoundingMode.HALF_UP) + " \\$" + balance;
+        outFile.writeToFile(line);
+
 
     }
+
+    public boolean isValidDollar(BigDecimal amount) {
+        boolean isTrue = false;
+        if(amount.compareTo(new BigDecimal("10")) == 0) {
+            isTrue = true;
+        }
+        if(amount.compareTo(new BigDecimal("5")) == 0) {
+            isTrue = true;
+        }
+        if(amount.compareTo(new BigDecimal("2")) == 0) {
+            isTrue = true;
+        }
+        if(amount.compareTo(new BigDecimal("1")) == 0) {
+            isTrue = true;
+        }
+        return isTrue;
+    }
+
     public String createChange(BigDecimal price, BigDecimal amount){
         String coinChange = "Quarters: ";
-        BigDecimal change = amount.subtract(price);
+        BigDecimal change = this.balance;
 
         //System.out.println(change);
-        BigDecimal quarters = getQuarters(change);
-        BigDecimal changeArray [] = change.divideAndRemainder(new BigDecimal(".25"));
-        change = changeArray[1];
-        BigDecimal dimes = getDimes(change);
-        changeArray = change.divideAndRemainder(new BigDecimal(".10"));
-        change = changeArray[1];
-        BigDecimal nickles = getNickles(change);
+        BigDecimal quarters = getQuarters(this.balance);
+        BigDecimal changeArray [] = this.balance.divideAndRemainder(new BigDecimal(".25"));
+        this.balance = changeArray[1];
+        BigDecimal dimes = getDimes(this.balance);
+        changeArray = this.balance.divideAndRemainder(new BigDecimal(".10"));
+        this.balance = changeArray[1];
+        BigDecimal nickles = getNickles(this.balance);
 
         coinChange += quarters + " Dimes: " + dimes + " Nickles: " + nickles;
         this.balance = new BigDecimal("0.00");
