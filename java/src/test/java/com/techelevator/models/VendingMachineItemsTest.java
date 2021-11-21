@@ -13,10 +13,14 @@ public class VendingMachineItemsTest {
 
     VendingMachineItems vendingMachineItems;
 
+
+
     @Before
     public void setup() {
         this.vendingMachineItems = new VendingMachineItems();
-
+        Chips chips = new Chips("T7","TestChip",new BigDecimal("3.45"),5);
+        Map<String,Chips> testMap = new HashMap<>();
+        testMap.put("",chips);
     }
 
 
@@ -46,5 +50,24 @@ public class VendingMachineItemsTest {
 
         assertEquals(expectedResult,actualResult);
     }
+
+    @Test
+    public void testSoldOutCheck() {
+        String testSlot = "A2";
+        boolean expectedResult = false;
+        boolean actualResult = vendingMachineItems.soldOutCheck(testSlot);
+
+        assertEquals(expectedResult,actualResult);
+    }
+
+    @Test
+    public void testIsInMachine() {
+        String testSlot = "B3";
+        boolean expectedResult = true;
+        boolean actualResult = vendingMachineItems.isInMachine(testSlot);
+
+        assertEquals(expectedResult, actualResult);
+    }
+
 
 }

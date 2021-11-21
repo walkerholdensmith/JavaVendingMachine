@@ -101,6 +101,7 @@ public class PurchaseOption {
     public void runOptionThree(){
         System.out.println(this.balance);
         outFile.writeToFile("CREATE CHANGE: \\$" + this.balance + " \\$" + this.balance.subtract(this.balance));
+        System.out.println(this.balance);
         String line = (createChange(this.balance, this.moneyIn.subtract(this.balance)));
         System.out.println(line);
         this.setMoneyIn(new BigDecimal("0.00"));
