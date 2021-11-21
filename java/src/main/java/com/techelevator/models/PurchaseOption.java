@@ -71,13 +71,13 @@ public class PurchaseOption {
                 System.out.println("Not in Machine");
                 displayPurchaseOption();
             }
-           if (populatedMap.soldOutCheck(this.purchasedItem)){
+            if (populatedMap.soldOutCheck(this.purchasedItem)){
 
                 System.out.println("SOLD OUT!");
                 populatedMap.displayItems();
                 displayPurchaseOption();
             }
-          if(this.balance.compareTo(populatedMap.getItemPrice(purchasedItem)) == 1) {
+           if(this.balance.compareTo(populatedMap.getItemPrice(purchasedItem)) == 1) {
 
 
                 populatedMap.updateItem(this.purchasedItem);
@@ -99,13 +99,16 @@ public class PurchaseOption {
     }
 
     public void runOptionThree(){
-        System.out.println(this.balance);
-        outFile.writeToFile("CREATE CHANGE: \\$" + this.balance + " \\$" + this.balance.subtract(this.balance));
-        System.out.println(this.balance);
-        String line = (createChange(this.balance, this.moneyIn.subtract(this.balance)));
-        System.out.println(line);
-        this.setMoneyIn(new BigDecimal("0.00"));
-        outFile.closeWriteFile();
+        if (populatedMap.isInMachine(this.purchasedItem)){
+            System.out.println(this.balance);
+            outFile.writeToFile("CREATE CHANGE: \\$" + this.balance + " \\$" + this.balance.subtract(this.balance));
+            System.out.println(this.balance);
+            String line = (createChange(this.balance, this.moneyIn.subtract(this.balance)));
+            System.out.println(line);
+            this.setMoneyIn(new BigDecimal("0.00"));
+            outFile.closeWriteFile();
+        }
+
     }
 
     public void setMoneyIn(BigDecimal moneyIn) {
@@ -131,7 +134,6 @@ public class PurchaseOption {
         this.setMoneyIn(this.moneyIn);
         userOutput.currentMoneyProvided(this.balance);
         String line = "FEED MONEY \\$" + moneyIn.setScale(2,RoundingMode.HALF_UP) + " \\$" + balance;
-        outFile.writeToFile(line);
 
     }
 
@@ -171,7 +173,6 @@ public class PurchaseOption {
         String coinChange = "Quarters: ";
         BigDecimal change = this.balance;
 
-        //System.out.println(change);
         BigDecimal quarters = getQuarters(this.balance);
         BigDecimal changeArray [] = this.balance.divideAndRemainder(new BigDecimal(".25"));
         this.balance = changeArray[1];
