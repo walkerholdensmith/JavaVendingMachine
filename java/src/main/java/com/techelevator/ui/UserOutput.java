@@ -1,6 +1,6 @@
 package com.techelevator.ui;
 
-import com.techelevator.models.PurchaseMenu;
+
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Scanner;
  * 
  * Dependencies: None
  */
-public class UserOutput extends PurchaseMenu
+public class UserOutput
 {
 
     public static void displayMessage(String message)

@@ -58,7 +58,7 @@ public class VendingMachineItems extends VendingMachineFileManager{
 
         for (Items item : populatedItemMap.values()){
 
-            System.out.println("Slot:" + item.getSlot() + " Name:" + item.getName() + " Price:" + item.getPrice() + " Amount:" + item.getAmount());
+            System.out.println("Slot: " + item.getSlot() + " Name: " + item.getName() + " Price: $" + item.getPrice() + " Amount: " + item.getAmount());
 
         }
 
@@ -73,12 +73,7 @@ public class VendingMachineItems extends VendingMachineFileManager{
     }
 
     public boolean isInMachine(String itemSlot){
-        Items value = populatedItemMap.get(itemSlot);
-        if (value != null) {
-            return true;
-        } else {
-            return false;
-        }
+         return populatedItemMap.containsKey(itemSlot);
     }
 
     public boolean soldOutCheck(String purchasedItem){
