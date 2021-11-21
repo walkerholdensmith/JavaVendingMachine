@@ -1,3 +1,5 @@
+
+
 package com.techelevator.application;
 
 
@@ -8,15 +10,6 @@ import com.techelevator.ui.UserOutput;
 
 
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
 
 public class VendingMachine {
 
@@ -40,28 +33,13 @@ public class VendingMachine {
         }
 
 
+
     }
 
 
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

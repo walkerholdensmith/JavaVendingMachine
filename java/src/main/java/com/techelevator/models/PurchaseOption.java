@@ -150,7 +150,7 @@ public class PurchaseOption extends VendingMachineItems{
     public boolean isValidDollar(BigDecimal amount) {
         boolean isTrue = false;
         if(amount.compareTo(new BigDecimal("10")) == 0) {
-           isTrue = true;
+            isTrue = true;
         }
         if(amount.compareTo(new BigDecimal("5")) == 0) {
             isTrue = true;
