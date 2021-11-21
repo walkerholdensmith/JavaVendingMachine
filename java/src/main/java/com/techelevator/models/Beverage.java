@@ -2,7 +2,7 @@ package com.techelevator.models;
 
 import java.math.BigDecimal;
 
-public class Beverage extends VendingMachineFunctions implements Items {
+public class Beverage implements Items {
     private String slot;
     private String name;
     private BigDecimal price;
