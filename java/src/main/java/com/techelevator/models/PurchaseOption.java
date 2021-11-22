@@ -106,7 +106,7 @@ public class PurchaseOption {
             String line = (createChange(this.balance, this.moneyIn.subtract(this.balance)));
             System.out.println(line);
             this.setMoneyIn(new BigDecimal("0.00"));
-            outFile.closeWriteFile();
+            //outFile.closeWriteFile();
         }
 
     }
@@ -203,6 +203,10 @@ public class PurchaseOption {
         BigDecimal nickle = new BigDecimal(".05");
         BigDecimal [] nickleArray = change.divideAndRemainder(nickle);
         return nickleArray[0];
+    }
+
+    public void closeOutputFile() {
+        outFile.closeWriteFile();
     }
 
 }
