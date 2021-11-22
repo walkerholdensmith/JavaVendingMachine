@@ -11,7 +11,7 @@ import java.math.RoundingMode;
 import java.util.Map;
 import java.util.Scanner;
 
-public class PurchaseOption {
+public class PurchaseOption extends VendingMachine{
 
 
     private BigDecimal balance = new BigDecimal("0.00");
@@ -20,15 +20,16 @@ public class PurchaseOption {
     private String purchasedItem = "";
     private BigDecimal remainingMoney = new BigDecimal("0.00");
     private Scanner input = new Scanner(System.in);
-    private VendingMachineFileManager outFile = new VendingMachineFileManager();
+    VendingMachineFileManager outFile;
     private VendingMachineItems populatedMap;
     private UserOutput userOutput = new UserOutput();
     private UserInput userInput = new UserInput();
 
     private PrintWriter pw;
 
-    public PurchaseOption(VendingMachineItems populatedMap){
+    public PurchaseOption(VendingMachineItems populatedMap,VendingMachineFileManager outFile){
         this.populatedMap = populatedMap;
+        this.outFile = outFile;
 
     }
 
@@ -66,18 +67,29 @@ public class PurchaseOption {
 
             populatedMap.displayItems();
             this.purchasedItem = userInput.itemSelection();
+            char c1 =this.purchasedItem.charAt(1);
+            String num =Character.toString(c1);
+            if (!isANum(num)){
+                System.out.println("Not a valid Selection: ");
+                //displayPurchaseOption();
+
+            }
             if(!populatedMap.isInMachine(this.purchasedItem)) {
 
                 System.out.println("Not in Machine");
                 displayPurchaseOption();
+
             }
             if (populatedMap.soldOutCheck(this.purchasedItem)){
 
                 System.out.println("SOLD OUT!");
                 populatedMap.displayItems();
                 displayPurchaseOption();
+
+
             }
-           if(this.balance.compareTo(populatedMap.getItemPrice(purchasedItem)) == 1) {
+
+            if(this.balance.compareTo(populatedMap.getItemPrice(purchasedItem)) == 1) {
 
 
                 populatedMap.updateItem(this.purchasedItem);
@@ -86,14 +98,19 @@ public class PurchaseOption {
                 line =  populatedMap.getName(this.purchasedItem) +" \\$" + this.moneyIn.setScale(2, RoundingMode.HALF_UP) + " \\$" + this.balance ;
                 outFile.writeToFile(line);
                 this.moneyIn = this.moneyIn.subtract(populatedMap.getItemPrice(purchasedItem));
+
+
             } else {
                 userOutput.notEnoughMoney();
+
+
             }
             displayPurchaseOption();
 
             if(!this.option.equals("2")) {
                 stillSelecting = false;
             }
+
         }
 
     }
@@ -104,7 +121,7 @@ public class PurchaseOption {
             outFile.writeToFile("CREATE CHANGE: \\$" + this.balance + " \\$" + this.balance.subtract(this.balance));
             System.out.println(this.balance);
             String line = (createChange(this.balance, this.moneyIn.subtract(this.balance)));
-            System.out.println(line);
+            //System.out.println(line);
             this.setMoneyIn(new BigDecimal("0.00"));
             //outFile.closeWriteFile();
         }
@@ -134,7 +151,7 @@ public class PurchaseOption {
         this.setMoneyIn(this.moneyIn);
         userOutput.currentMoneyProvided(this.balance);
         String line = "FEED MONEY \\$" + moneyIn.setScale(2,RoundingMode.HALF_UP) + " \\$" + balance;
-
+        outFile.writeToFile(line);
     }
 
     public boolean isValidDollar(String amount) {
@@ -205,8 +222,6 @@ public class PurchaseOption {
         return nickleArray[0];
     }
 
-    public void closeOutputFile() {
-        outFile.closeWriteFile();
-    }
+
 
 }

@@ -9,19 +9,23 @@ import com.techelevator.models.VendingMachineItems;
 import com.techelevator.ui.UserInput;
 import com.techelevator.ui.UserOutput;
 
-public class VendingMachine extends VendingMachineFileManager {
+public class VendingMachine {
     private VendingMachineItems vendingMachineItems = new VendingMachineItems();
+    VendingMachineFileManager outFile = new VendingMachineFileManager();
+
     public void run() {
+
         while(true) {
+
             UserOutput.displayHomeScreen();
             String choice = UserInput.getHomeScreenOption();
             if (choice.equals("display")){
                 vendingMachineItems.displayItems();
             } else if (choice.equals("purchase")){
-                PurchaseOption purchaseOption = new PurchaseOption(vendingMachineItems);
+                PurchaseOption purchaseOption = new PurchaseOption(vendingMachineItems, outFile);
                 purchaseOption.displayPurchaseOption();
             } else if (choice.equals("exit")){
-                super.closeWriteFile();
+                outFile.closeWriteFile();
                 break;
             } else {
                 System.out.println("Invalid Option");

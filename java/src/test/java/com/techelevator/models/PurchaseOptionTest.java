@@ -13,8 +13,9 @@ public class PurchaseOptionTest {
 
     private PurchaseOption purchaseOption;
     VendingMachineItems vendingItems = new VendingMachineItems();
+    VendingMachineFileManager outFile = new VendingMachineFileManager();
     @Before
-    public void setup(){this.purchaseOption = new PurchaseOption(vendingItems);}
+    public void setup(){this.purchaseOption = new PurchaseOption(vendingItems, outFile);}
 
 
     @Test
